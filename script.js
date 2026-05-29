@@ -994,11 +994,152 @@ function finaliseResults(goalIds) {
 // ─────────────────────────────────────────────
 
 function calculateResults() {
-  // Count votes per trait
+
+  // ─────────────────────────────────────────────
+  // COUNT USER TRAITS
+  // ─────────────────────────────────────────────
+
   const scores = {};
+
   Object.values(answers).forEach(val => {
     scores[val] = (scores[val] || 0) + 1;
   });
+
+  // ─────────────────────────────────────────────
+  // DETERMINE DOMINANT PERSONALITY
+  // ─────────────────────────────────────────────
+
+  const personalityKeys = Object.keys(PERSONALITY_TYPES);
+
+  let dominantType = 'creative';
+  let maxScore = -1;
+
+  personalityKeys.forEach(key => {
+    if ((scores[key] || 0) > maxScore) {
+      maxScore = scores[key] || 0;
+      dominantType = key;
+    }
+  });
+
+  // ─────────────────────────────────────────────
+  // IMPROVED CAREER MATCHING
+  // ─────────────────────────────────────────────
+
+  const careerScores = CAREERS.map(career => {
+
+    let totalDifference = 0;
+    let totalTraits = 0;
+
+    // Compare user scores vs career ideal scores
+    Object.entries(career.scores).forEach(([trait, careerWeight]) => {
+
+      const userScore = scores[trait] || 0;
+
+      // Scale career weight to realistic trait expectations
+      const idealScore = careerWeight * 2.5;
+
+      // Difference between user and ideal career profile
+      const difference = Math.abs(userScore - idealScore);
+
+      totalDifference += difference;
+      totalTraits++;
+    });
+
+    // Convert difference into match percentage
+    let matchPct = 100 - ((totalDifference / (totalTraits * 10)) * 100);
+
+    // Add slight randomness for realism
+    const randomBoost = Math.floor(Math.random() * 7) - 3;
+    matchPct += randomBoost;
+
+    // Bonus if dominant personality aligns with career category
+    if (
+      (dominantType === 'creative' && career.category === 'creative') ||
+      (dominantType === 'tech' && career.category === 'tech') ||
+      (dominantType === 'social' && career.category === 'people') ||
+      (dominantType === 'leadership' && career.category === 'business') ||
+      (dominantType === 'analytical' && career.category === 'science')
+    ) {
+      matchPct += 6;
+    }
+
+    // Clamp realistic range
+    if (matchPct > 95) matchPct = 95;
+    if (matchPct < 42) matchPct = 42;
+
+    return {
+      ...career,
+      matchPct: Math.round(matchPct)
+    };
+  });
+
+  // Sort highest matches first
+  careerScores.sort((a, b) => b.matchPct - a.matchPct);
+
+  // ─────────────────────────────────────────────
+  // STRENGTH PROFILE
+  // ─────────────────────────────────────────────
+
+  const strengthProfile = [
+    {
+      label: "Creativity",
+      value: Math.min(100, ((scores.creative || 0) / 6) * 100),
+      color: "linear-gradient(90deg,#fbcfe8,#f9a8d4)"
+    },
+
+    {
+      label: "Analytical",
+      value: Math.min(100, ((scores.analytical || 0) / 6) * 100),
+      color: "linear-gradient(90deg,#bfdbfe,#93c5fd)"
+    },
+
+    {
+      label: "Leadership",
+      value: Math.min(100, ((scores.leadership || 0) / 6) * 100),
+      color: "linear-gradient(90deg,#fed7aa,#fbbf24)"
+    },
+
+    {
+      label: "Social",
+      value: Math.min(100, ((scores.social || 0) / 6) * 100),
+      color: "linear-gradient(90deg,#a7f3d0,#34d399)"
+    },
+
+    {
+      label: "Tech",
+      value: Math.min(100, ((scores.tech || 0) / 6) * 100),
+      color: "linear-gradient(90deg,#c4b5fd,#818cf8)"
+    },
+
+    {
+      label: "Business",
+      value: Math.min(100, ((scores.business || 0) / 6) * 100),
+      color: "linear-gradient(90deg,#fde68a,#f59e0b)"
+    },
+
+    {
+      label: "Science",
+      value: Math.min(100, ((scores.science || 0) / 6) * 100),
+      color: "linear-gradient(90deg,#86efac,#22c55e)"
+    },
+
+    {
+      label: "STEM",
+      value: Math.min(100, ((scores.stem || 0) / 4) * 100),
+      color: "linear-gradient(90deg,#bfdbfe,#c4b5fd)"
+    }
+  ];
+
+  // ─────────────────────────────────────────────
+  // RETURN RESULTS
+  // ─────────────────────────────────────────────
+
+  return {
+    dominantType,
+    careerScores,
+    strengthProfile
+  };
+}
 
   // Dominant personality type
   const personalityKeys = Object.keys(PERSONALITY_TYPES);
