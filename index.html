@@ -12,21 +12,62 @@
 </head>
 <body>
 
-  <!-- Loading Screen -->
+  <!-- ─── LOADING SCREEN ─── -->
   <div id="loader" role="status" aria-label="Loading Cureer">
     <div class="loader-inner">
-      <div class="loader-logo">Cureer</div>
-      <div class="loader-dots">
-        <span></span><span></span><span></span>
-      </div>
+      <svg class="loader-mascot" viewBox="0 0 110 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="ldg1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#f9a8d4"/>
+          </linearGradient>
+          <linearGradient id="ldg2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#c4b5fd"/><stop offset="100%" stop-color="#fbcfe8"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="42" cy="122" rx="10" ry="13" fill="url(#ldg2)"/>
+        <ellipse cx="68" cy="122" rx="10" ry="13" fill="url(#ldg2)"/>
+        <ellipse cx="55" cy="88" rx="26" ry="30" fill="url(#ldg1)" opacity="0.95"/>
+        <ellipse cx="24" cy="90" rx="9" ry="17" fill="url(#ldg1)" transform="rotate(15 24 90)"/>
+        <ellipse cx="86" cy="90" rx="9" ry="17" fill="url(#ldg1)" transform="rotate(-15 86 90)"/>
+        <circle cx="55" cy="46" r="25" fill="url(#ldg1)"/>
+        <circle cx="46" cy="43" r="5" fill="#fff"/><circle cx="64" cy="43" r="5" fill="#fff"/>
+        <circle cx="47" cy="44" r="2.5" fill="#3b2a8c"/><circle cx="65" cy="44" r="2.5" fill="#3b2a8c"/>
+        <path d="M45 56 Q55 64 65 56" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <text x="74" y="22" font-size="16" fill="#f9a8d4">✦</text>
+      </svg>
+      <div class="loader-wordmark">Cureer</div>
+      <div class="loader-tagline">Finding your path…</div>
+      <div class="loader-dots"><span></span><span></span><span></span></div>
     </div>
   </div>
 
-  <!-- Navbar -->
+  <!-- ─── MAIN PAGE WRAPPER ─── -->
+  <div id="page-main">
+
+  <!-- ─── NAVBAR ─── -->
   <header class="navbar" role="banner">
     <nav class="nav-container" aria-label="Main navigation">
       <a href="#hero" class="nav-logo" aria-label="Cureer home">
-        <span class="logo-icon" aria-hidden="true">✦</span> Cureer
+        <svg class="logo-svg" viewBox="0 0 110 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="nlg1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#f9a8d4"/>
+            </linearGradient>
+            <linearGradient id="nlg2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#c4b5fd"/><stop offset="100%" stop-color="#fbcfe8"/>
+            </linearGradient>
+          </defs>
+          <ellipse cx="42" cy="122" rx="10" ry="13" fill="url(#nlg2)"/>
+          <ellipse cx="68" cy="122" rx="10" ry="13" fill="url(#nlg2)"/>
+          <ellipse cx="55" cy="88" rx="26" ry="30" fill="url(#nlg1)" opacity="0.95"/>
+          <ellipse cx="24" cy="90" rx="9" ry="17" fill="url(#nlg1)" transform="rotate(15 24 90)"/>
+          <ellipse cx="86" cy="90" rx="9" ry="17" fill="url(#nlg1)" transform="rotate(-15 86 90)"/>
+          <circle cx="55" cy="46" r="25" fill="url(#nlg1)"/>
+          <circle cx="46" cy="43" r="5" fill="#fff"/><circle cx="64" cy="43" r="5" fill="#fff"/>
+          <circle cx="47" cy="44" r="2.5" fill="#3b2a8c"/><circle cx="65" cy="44" r="2.5" fill="#3b2a8c"/>
+          <path d="M45 56 Q55 64 65 56" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        </svg>
+        <span class="nav-logo-text">Cureer</span>
       </a>
       <ul class="nav-links" role="list">
         <li><a href="#about" class="nav-link">About</a></li>
@@ -40,6 +81,7 @@
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
           <span class="theme-icon" aria-hidden="true">☀️</span>
         </button>
+        <button class="btn btn-nav" id="navActivityBtn">📋 Activity</button>
         <a href="#quiz-section" class="btn btn-nav">Take the Quiz</a>
         <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
           <span></span><span></span><span></span>
@@ -55,6 +97,7 @@
         <li><a href="#testimonials" class="mobile-link">Stories</a></li>
         <li><a href="#faq" class="mobile-link">FAQ</a></li>
         <li><a href="#contact" class="mobile-link">Contact</a></li>
+        <li><button class="btn btn-ghost mobile-link" style="width:100%;text-align:left;padding:12px 24px;" id="mobileActivityBtn">📋 My Activity</button></li>
         <li><a href="#quiz-section" class="btn btn-nav mobile-cta">Take the Quiz</a></li>
       </ul>
     </div>
@@ -64,7 +107,6 @@
 
     <!-- ─── HERO ─── -->
     <section id="hero" class="hero" aria-label="Hero section">
-      <!-- Floating shapes -->
       <div class="shape shape-1" aria-hidden="true"></div>
       <div class="shape shape-2" aria-hidden="true"></div>
       <div class="shape shape-3" aria-hidden="true"></div>
@@ -78,27 +120,18 @@
           <span class="hero-typed" id="heroTyped" aria-live="polite"></span>
         </h1>
         <p class="hero-subtitle">
-          Answer a few fun questions and we'll match you with careers that actually <em>fit</em> who you are — your personality, passions, and strengths.
+          Answer 24 fun questions and we'll match you with careers that actually <em>fit</em> who you are — your personality, passions, and strengths.
         </p>
         <div class="hero-actions">
           <a href="#quiz-section" class="btn btn-primary">Start the Quiz →</a>
           <a href="#about" class="btn btn-ghost">Learn More</a>
         </div>
         <div class="hero-stats" aria-label="Platform statistics">
-          <div class="stat">
-            <strong>50+</strong>
-            <span>Career Paths</span>
-          </div>
+          <div class="stat"><strong>50+</strong><span>Career Paths</span></div>
           <div class="stat-divider" aria-hidden="true"></div>
-          <div class="stat">
-            <strong>12</strong>
-            <span>Quiz Questions</span>
-          </div>
+          <div class="stat"><strong>24</strong><span>Quiz Questions</span></div>
           <div class="stat-divider" aria-hidden="true"></div>
-          <div class="stat">
-            <strong>Free</strong>
-            <span>Always</span>
-          </div>
+          <div class="stat"><strong>Free</strong><span>Always</span></div>
         </div>
       </div>
 
@@ -131,10 +164,7 @@
       <div class="container">
         <div class="section-label">About Cureer</div>
         <h2 id="about-heading" class="section-title">Why career confusion is <span class="highlight">totally normal</span></h2>
-        <p class="section-subtitle">
-          Most people don't know what they want to do — and that's okay. Cureer is here to help you explore, not to pressure you into a single answer.
-        </p>
-
+        <p class="section-subtitle">Most people don't know what they want to do — and that's okay. Cureer is here to help you explore, not to pressure you into a single answer.</p>
         <div class="about-grid">
           <div class="about-card fade-in">
             <div class="about-icon" aria-hidden="true">🌱</div>
@@ -144,7 +174,7 @@
           <div class="about-card fade-in">
             <div class="about-icon" aria-hidden="true">🎯</div>
             <h3>Personalized to You</h3>
-            <p>Our quiz maps your unique personality, interests, and strengths to real-world careers — not generic advice.</p>
+            <p>Our 24-question quiz maps your unique personality, interests, and strengths to real-world careers — not generic advice.</p>
           </div>
           <div class="about-card fade-in">
             <div class="about-icon" aria-hidden="true">📚</div>
@@ -165,20 +195,30 @@
       <div class="container">
         <div class="section-label">Personality Quiz</div>
         <h2 id="quiz-heading" class="section-title">Let's figure out <span class="highlight">who you are</span></h2>
-        <p class="section-subtitle">12 quick questions. No wrong answers. Just honest ones.</p>
+        <p class="section-subtitle">24 engaging questions across 8 key areas. No wrong answers — just honest ones.</p>
 
-        <!-- Quiz Container -->
         <div class="quiz-wrapper" id="quizWrapper">
 
           <!-- Quiz Intro -->
           <div class="quiz-intro" id="quizIntro">
             <div class="quiz-intro-icon" aria-hidden="true">🔍</div>
             <h3>Ready to discover your career path?</h3>
-            <p>This quiz takes about 3–5 minutes. Answer honestly for the best results. You can save and return anytime.</p>
+            <p>This 24-question assessment covers creativity, tech, leadership, communication, logic, and more. Takes about 5–7 minutes.</p>
             <div class="quiz-intro-features">
-              <span>✓ 12 questions</span>
-              <span>✓ Science-backed</span>
+              <span>✓ 24 questions</span>
+              <span>✓ 8 categories</span>
               <span>✓ Instant results</span>
+              <span>✓ Saved to Activity</span>
+            </div>
+            <div class="quiz-category-pills">
+              <span class="qpill qp-creative">🎨 Creativity</span>
+              <span class="qpill qp-tech">💻 Technology</span>
+              <span class="qpill qp-leadership">🚀 Leadership</span>
+              <span class="qpill qp-social">💛 Helping Others</span>
+              <span class="qpill qp-analytical">🔬 Analytical</span>
+              <span class="qpill qp-comm">🗣 Communication</span>
+              <span class="qpill qp-biz">📈 Business</span>
+              <span class="qpill qp-problem">🧩 Problem Solving</span>
             </div>
             <button class="btn btn-primary" id="startQuiz">Start Quiz ✨</button>
             <button class="btn btn-ghost" id="loadSaved" style="display:none">Resume Saved Quiz</button>
@@ -186,25 +226,38 @@
 
           <!-- Quiz Body -->
           <div class="quiz-body" id="quizBody" style="display:none" aria-live="polite">
-            <!-- Progress -->
             <div class="quiz-progress" role="progressbar" aria-label="Quiz progress">
               <div class="progress-bar-track">
                 <div class="progress-bar-fill" id="progressFill"></div>
               </div>
-              <span class="progress-text" id="progressText">Question 1 of 12</span>
+              <div class="progress-meta">
+                <span class="progress-text" id="progressText">Question 1 of 24</span>
+                <span class="progress-pct" id="progressPct">0%</span>
+              </div>
             </div>
-
-            <!-- Question Card -->
+            <div class="question-category-badge" id="questionCategoryBadge"></div>
             <div class="question-card" id="questionCard">
               <div class="question-number" id="questionNum" aria-label="Question number"></div>
               <h3 class="question-text" id="questionText"></h3>
               <div class="question-options" id="questionOptions" role="group" aria-label="Answer options"></div>
             </div>
-
-            <!-- Navigation -->
             <div class="quiz-nav">
               <button class="btn btn-ghost" id="prevBtn" aria-label="Previous question">← Back</button>
               <button class="btn btn-primary" id="nextBtn" aria-label="Next question">Next →</button>
+            </div>
+          </div>
+
+          <!-- Goal Selection — shown after quiz, before results -->
+          <div class="quiz-goals" id="quizGoals" style="display:none">
+            <div class="goals-header">
+              <div style="font-size:3rem;margin-bottom:12px">🎯</div>
+              <h3>Set Your Goals</h3>
+              <p>Choose 1–3 goals to work towards. We'll track them on your Activity page with a step-by-step roadmap.</p>
+            </div>
+            <div class="goals-options-grid" id="goalsOptionsGrid"></div>
+            <div class="quiz-nav">
+              <button class="btn btn-ghost" id="skipGoals">Skip for now</button>
+              <button class="btn btn-primary" id="confirmGoals">Save Goals &amp; See Results →</button>
             </div>
           </div>
 
@@ -216,7 +269,6 @@
               <p id="personalityTypeText"></p>
             </div>
 
-            <!-- Dashboard -->
             <div class="dashboard" id="dashboard">
               <div class="dashboard-personality">
                 <div class="personality-badge" id="personalityBadge" aria-label="Your personality type"></div>
@@ -232,7 +284,6 @@
               </div>
             </div>
 
-            <!-- Career Cards -->
             <div class="results-careers" id="resultsCareers">
               <h4>Your Top Career Matches</h4>
               <div class="search-filter-bar" role="search" aria-label="Filter career results">
@@ -251,6 +302,7 @@
 
             <div class="results-actions">
               <button class="btn btn-primary" id="retakeQuiz">Retake Quiz 🔄</button>
+              <button class="btn btn-ghost" id="viewActivity">View My Activity 📋</button>
               <button class="btn btn-ghost" id="shareResults">Share Results 📤</button>
             </div>
           </div>
@@ -265,7 +317,6 @@
         <div class="section-label">Explore Careers</div>
         <h2 id="careers-heading" class="section-title">Browse <span class="highlight">all career paths</span></h2>
         <p class="section-subtitle">Not sure where to start? Browse our full career library and find something that sparks your interest.</p>
-
         <div class="careers-filter" role="toolbar" aria-label="Career category filters">
           <button class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
           <button class="filter-btn" data-filter="tech" aria-pressed="false">Technology</button>
@@ -274,7 +325,6 @@
           <button class="filter-btn" data-filter="business" aria-pressed="false">Business</button>
           <button class="filter-btn" data-filter="science" aria-pressed="false">Science</button>
         </div>
-
         <div class="careers-grid" id="careersGrid" aria-label="Career cards"></div>
       </div>
     </section>
@@ -284,17 +334,13 @@
       <div class="container">
         <div class="section-label">Real Stories</div>
         <h2 id="testimonials-heading" class="section-title">People who found their <span class="highlight">path</span></h2>
-
         <div class="testimonials-grid">
           <article class="testimonial-card fade-in">
             <div class="testimonial-stars" aria-label="5 stars">★★★★★</div>
             <p>"I had no idea what I wanted to do after high school. Cureer matched me with UX Design and now I'm studying it in university. Best decision ever."</p>
             <div class="testimonial-author">
               <div class="author-avatar" aria-hidden="true">S</div>
-              <div>
-                <strong>Sofia R.</strong>
-                <span>19, UX Design Student</span>
-              </div>
+              <div><strong>Sofia R.</strong><span>19, UX Design Student</span></div>
             </div>
           </article>
           <article class="testimonial-card fade-in">
@@ -302,10 +348,7 @@
             <p>"The quiz asked questions I'd never thought about — like how I handle conflict and whether I like patterns. It was surprisingly accurate. I'm now pursuing data science."</p>
             <div class="testimonial-author">
               <div class="author-avatar" aria-hidden="true">M</div>
-              <div>
-                <strong>Marcus T.</strong>
-                <span>21, Data Science Intern</span>
-              </div>
+              <div><strong>Marcus T.</strong><span>21, Data Science Intern</span></div>
             </div>
           </article>
           <article class="testimonial-card fade-in">
@@ -313,10 +356,7 @@
             <p>"My parents wanted me to do medicine but I always loved talking to people. Cureer showed me psychology as a 94% match and I finally felt understood."</p>
             <div class="testimonial-author">
               <div class="author-avatar" aria-hidden="true">A</div>
-              <div>
-                <strong>Aisha K.</strong>
-                <span>17, High School Senior</span>
-              </div>
+              <div><strong>Aisha K.</strong><span>17, High School Senior</span></div>
             </div>
           </article>
           <article class="testimonial-card fade-in">
@@ -324,10 +364,7 @@
             <p>"I've wanted to start a business since I was 12 but nobody took me seriously. Seeing 'Entrepreneur' as my top match with an actual roadmap gave me the push I needed."</p>
             <div class="testimonial-author">
               <div class="author-avatar" aria-hidden="true">J</div>
-              <div>
-                <strong>James O.</strong>
-                <span>22, Startup Founder</span>
-              </div>
+              <div><strong>James O.</strong><span>22, Startup Founder</span></div>
             </div>
           </article>
           <article class="testimonial-card fade-in">
@@ -335,10 +372,7 @@
             <p>"I always thought I was 'bad at school' but Cureer helped me realise I just learn differently. I'm now training to be a chef and loving every second."</p>
             <div class="testimonial-author">
               <div class="author-avatar" aria-hidden="true">L</div>
-              <div>
-                <strong>Luna P.</strong>
-                <span>20, Culinary Arts Student</span>
-              </div>
+              <div><strong>Luna P.</strong><span>20, Culinary Arts Student</span></div>
             </div>
           </article>
           <article class="testimonial-card fade-in">
@@ -346,10 +380,7 @@
             <p>"Showed this to my whole friend group. Three of us took the quiz together and we all got totally different results. It's genuinely personalised, not generic."</p>
             <div class="testimonial-author">
               <div class="author-avatar" aria-hidden="true">R</div>
-              <div>
-                <strong>Ryan C.</strong>
-                <span>18, A-Level Student</span>
-              </div>
+              <div><strong>Ryan C.</strong><span>18, A-Level Student</span></div>
             </div>
           </article>
         </div>
@@ -361,61 +392,30 @@
       <div class="container faq-container">
         <div class="section-label">FAQ</div>
         <h2 id="faq-heading" class="section-title">Questions you <span class="highlight">might have</span></h2>
-
         <div class="faq-list" role="list">
           <div class="faq-item" role="listitem">
-            <button class="faq-question" aria-expanded="false">
-              Is this quiz scientifically accurate?
-              <span class="faq-arrow" aria-hidden="true">›</span>
-            </button>
-            <div class="faq-answer" hidden>
-              Our quiz is based on established personality and interest frameworks used in career counselling — including Holland's RIASEC model and Big Five personality traits. While no quiz can perfectly predict your future, it's a solid, evidence-informed starting point for exploration.
-            </div>
+            <button class="faq-question" aria-expanded="false">Is this quiz scientifically accurate?<span class="faq-arrow" aria-hidden="true">›</span></button>
+            <div class="faq-answer" hidden>Our quiz is based on established personality and interest frameworks used in career counselling — including Holland's RIASEC model and Big Five personality traits. While no quiz can perfectly predict your future, it's a solid, evidence-informed starting point for exploration.</div>
           </div>
           <div class="faq-item" role="listitem">
-            <button class="faq-question" aria-expanded="false">
-              Do I need to create an account?
-              <span class="faq-arrow" aria-hidden="true">›</span>
-            </button>
-            <div class="faq-answer" hidden>
-              Nope! You can take the quiz and see your results without signing up. We use your browser's local storage to save your progress, so you can return anytime on the same device.
-            </div>
+            <button class="faq-question" aria-expanded="false">Do I need to create an account?<span class="faq-arrow" aria-hidden="true">›</span></button>
+            <div class="faq-answer" hidden>Nope! You can take the quiz and see your results without signing up. We use your browser's local storage to save your progress, so you can return anytime on the same device.</div>
           </div>
           <div class="faq-item" role="listitem">
-            <button class="faq-question" aria-expanded="false">
-              Can I retake the quiz?
-              <span class="faq-arrow" aria-hidden="true">›</span>
-            </button>
-            <div class="faq-answer" hidden>
-              Absolutely. You can retake the quiz as many times as you like. Many people find their answers change as they grow, and that's completely normal. We recommend revisiting every 6–12 months.
-            </div>
+            <button class="faq-question" aria-expanded="false">Can I retake the quiz?<span class="faq-arrow" aria-hidden="true">›</span></button>
+            <div class="faq-answer" hidden>Absolutely. You can retake the quiz as many times as you like. Many people find their answers change as they grow, and that's completely normal. We recommend revisiting every 6–12 months.</div>
           </div>
           <div class="faq-item" role="listitem">
-            <button class="faq-question" aria-expanded="false">
-              What age group is Cureer for?
-              <span class="faq-arrow" aria-hidden="true">›</span>
-            </button>
-            <div class="faq-answer" hidden>
-              Cureer is designed primarily for teenagers (13–19) and young adults (20–25) who are figuring out their career direction. That said, anyone at any age exploring a career change will find it useful!
-            </div>
+            <button class="faq-question" aria-expanded="false">What age group is Cureer for?<span class="faq-arrow" aria-hidden="true">›</span></button>
+            <div class="faq-answer" hidden>Cureer is designed primarily for teenagers (13–19) and young adults (20–25) who are figuring out their career direction. That said, anyone at any age exploring a career change will find it useful!</div>
           </div>
           <div class="faq-item" role="listitem">
-            <button class="faq-question" aria-expanded="false">
-              Is Cureer really free?
-              <span class="faq-arrow" aria-hidden="true">›</span>
-            </button>
-            <div class="faq-answer" hidden>
-              Yes — 100% free. No hidden fees, no premium tiers, no tricks. We believe career guidance should be accessible to everyone, regardless of their background or financial situation.
-            </div>
+            <button class="faq-question" aria-expanded="false">Is Cureer really free?<span class="faq-arrow" aria-hidden="true">›</span></button>
+            <div class="faq-answer" hidden>Yes — 100% free. No hidden fees, no premium tiers, no tricks. We believe career guidance should be accessible to everyone, regardless of their background or financial situation.</div>
           </div>
           <div class="faq-item" role="listitem">
-            <button class="faq-question" aria-expanded="false">
-              What if I get a result I don't like?
-              <span class="faq-arrow" aria-hidden="true">›</span>
-            </button>
-            <div class="faq-answer" hidden>
-              Your results are a suggestion, not a verdict. Use them as a starting point for exploration. Look at the full list of recommended careers, not just the top one. You can also browse our career library independently to discover paths that resonate with you.
-            </div>
+            <button class="faq-question" aria-expanded="false">What if I get a result I don't like?<span class="faq-arrow" aria-hidden="true">›</span></button>
+            <div class="faq-answer" hidden>Your results are a suggestion, not a verdict. Use them as a starting point for exploration. Look at the full list of recommended careers, not just the top one. You can also browse our career library independently.</div>
           </div>
         </div>
       </div>
@@ -429,14 +429,8 @@
           <h2 id="contact-heading" class="section-title">Have a question? <span class="highlight">We'd love to hear from you.</span></h2>
           <p>Whether you want to give feedback, suggest a career, or just say hi — drop us a message. We read every single one.</p>
           <div class="contact-details">
-            <div class="contact-item">
-              <span aria-hidden="true">📧</span>
-              <span>hello@cureer.app</span>
-            </div>
-            <div class="contact-item">
-              <span aria-hidden="true">📍</span>
-              <span>Made with ♥ for young people everywhere</span>
-            </div>
+            <div class="contact-item"><span aria-hidden="true">📧</span><span>hello@cureer.app</span></div>
+            <div class="contact-item"><span aria-hidden="true">📍</span><span>Made with ♥ for young people everywhere</span></div>
           </div>
         </div>
         <form class="contact-form" id="contactForm" novalidate aria-label="Contact form">
@@ -464,9 +458,7 @@
             <textarea id="contactMessage" name="message" rows="4" placeholder="Tell us what's on your mind…" required></textarea>
           </div>
           <button type="submit" class="btn btn-primary btn-full">Send Message ✉️</button>
-          <div class="form-success" id="formSuccess" role="alert" hidden>
-            ✅ Thanks! We'll get back to you within 48 hours.
-          </div>
+          <div class="form-success" id="formSuccess" role="alert" hidden>✅ Thanks! We'll get back to you within 48 hours.</div>
         </form>
       </div>
     </section>
@@ -477,26 +469,35 @@
   <footer class="footer" role="contentinfo">
     <div class="container footer-container">
       <div class="footer-brand">
-        <a href="#hero" class="footer-logo" aria-label="Cureer home">
-          <span aria-hidden="true">✦</span> Cureer
+        <a href="#hero" class="footer-logo-link" aria-label="Cureer home">
+          <svg class="logo-svg footer-logo-svg" viewBox="0 0 110 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="flg1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#f9a8d4"/>
+              </linearGradient>
+              <linearGradient id="flg2" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#c4b5fd"/><stop offset="100%" stop-color="#fbcfe8"/>
+              </linearGradient>
+            </defs>
+            <ellipse cx="42" cy="122" rx="10" ry="13" fill="url(#flg2)"/>
+            <ellipse cx="68" cy="122" rx="10" ry="13" fill="url(#flg2)"/>
+            <ellipse cx="55" cy="88" rx="26" ry="30" fill="url(#flg1)" opacity="0.95"/>
+            <ellipse cx="24" cy="90" rx="9" ry="17" fill="url(#flg1)" transform="rotate(15 24 90)"/>
+            <ellipse cx="86" cy="90" rx="9" ry="17" fill="url(#flg1)" transform="rotate(-15 86 90)"/>
+            <circle cx="55" cy="46" r="25" fill="url(#flg1)"/>
+            <circle cx="46" cy="43" r="5" fill="#fff"/><circle cx="64" cy="43" r="5" fill="#fff"/>
+            <circle cx="47" cy="44" r="2.5" fill="#3b2a8c"/><circle cx="65" cy="44" r="2.5" fill="#3b2a8c"/>
+            <path d="M45 56 Q55 64 65 56" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          </svg>
+          <span class="footer-logo-text">Cureer</span>
         </a>
         <p>Helping young people navigate their future, one quiz at a time.</p>
         <div class="footer-social" aria-label="Social media links">
-          <a href="#" class="social-link" aria-label="Cureer on Instagram">
-            <span aria-hidden="true">📸</span>
-          </a>
-          <a href="#" class="social-link" aria-label="Cureer on TikTok">
-            <span aria-hidden="true">🎵</span>
-          </a>
-          <a href="#" class="social-link" aria-label="Cureer on Twitter/X">
-            <span aria-hidden="true">🐦</span>
-          </a>
-          <a href="#" class="social-link" aria-label="Cureer on LinkedIn">
-            <span aria-hidden="true">💼</span>
-          </a>
-          <a href="#" class="social-link" aria-label="Cureer on YouTube">
-            <span aria-hidden="true">▶️</span>
-          </a>
+          <a href="#" class="social-link" aria-label="Cureer on Instagram"><span aria-hidden="true">📸</span></a>
+          <a href="#" class="social-link" aria-label="Cureer on TikTok"><span aria-hidden="true">🎵</span></a>
+          <a href="#" class="social-link" aria-label="Cureer on Twitter/X"><span aria-hidden="true">🐦</span></a>
+          <a href="#" class="social-link" aria-label="Cureer on LinkedIn"><span aria-hidden="true">💼</span></a>
+          <a href="#" class="social-link" aria-label="Cureer on YouTube"><span aria-hidden="true">▶️</span></a>
         </div>
       </div>
       <nav class="footer-links" aria-label="Footer navigation">
@@ -531,8 +532,114 @@
     </div>
   </footer>
 
-  <!-- Back to Top -->
   <button class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">↑</button>
+
+  </div><!-- end #page-main -->
+
+  <!-- ══════════════════════════════════
+       ACTIVITY PAGE (hidden by default)
+  ══════════════════════════════════ -->
+  <div id="page-activity" style="display:none;min-height:100vh;background:var(--bg)">
+
+    <header class="navbar scrolled" role="banner">
+      <nav class="nav-container" aria-label="Activity navigation">
+        <button class="btn btn-ghost" id="backToMain" style="font-weight:700">← Back to Cureer</button>
+        <div style="display:flex;align-items:center;gap:10px">
+          <svg class="logo-svg" style="width:28px;height:33px" viewBox="0 0 110 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="alg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#f9a8d4"/></linearGradient>
+              <linearGradient id="alg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#c4b5fd"/><stop offset="100%" stop-color="#fbcfe8"/></linearGradient>
+            </defs>
+            <ellipse cx="42" cy="122" rx="10" ry="13" fill="url(#alg2)"/>
+            <ellipse cx="68" cy="122" rx="10" ry="13" fill="url(#alg2)"/>
+            <ellipse cx="55" cy="88" rx="26" ry="30" fill="url(#alg1)" opacity="0.95"/>
+            <ellipse cx="24" cy="90" rx="9" ry="17" fill="url(#alg1)" transform="rotate(15 24 90)"/>
+            <ellipse cx="86" cy="90" rx="9" ry="17" fill="url(#alg1)" transform="rotate(-15 86 90)"/>
+            <circle cx="55" cy="46" r="25" fill="url(#alg1)"/>
+            <circle cx="46" cy="43" r="5" fill="#fff"/><circle cx="64" cy="43" r="5" fill="#fff"/>
+            <circle cx="47" cy="44" r="2.5" fill="#3b2a8c"/><circle cx="65" cy="44" r="2.5" fill="#3b2a8c"/>
+            <path d="M45 56 Q55 64 65 56" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          </svg>
+          <span style="font-family:var(--font-display);font-weight:700;font-size:1.1rem">My Activity 📋</span>
+        </div>
+        <button class="theme-toggle" id="themeToggleActivity" aria-label="Toggle dark mode">
+          <span class="theme-icon">☀️</span>
+        </button>
+      </nav>
+    </header>
+
+    <main class="activity-main" style="padding-top:80px">
+      <div class="container">
+
+        <div class="activity-hero">
+          <div class="activity-hero-text">
+            <h1>Your Career Journey 🗺️</h1>
+            <p>Track your quiz history, goals, and personality insights all in one place.</p>
+          </div>
+          <div class="activity-hero-stats" id="activityHeroStats"></div>
+        </div>
+
+        <div class="activity-tabs" role="tablist">
+          <button class="activity-tab active" data-tab="overview">📊 Overview</button>
+          <button class="activity-tab" data-tab="history">🕐 Quiz History</button>
+          <button class="activity-tab" data-tab="goals">🎯 My Goals</button>
+          <button class="activity-tab" data-tab="achievements">🏆 Achievements</button>
+        </div>
+
+        <!-- OVERVIEW TAB -->
+        <div class="activity-panel active" id="tab-overview">
+          <div class="overview-grid" id="overviewGrid"></div>
+          <div id="overviewCareersSection" style="display:none;margin-top:40px">
+            <h3 style="font-size:1.2rem;margin-bottom:20px;font-family:var(--font-display)">Latest Career Recommendations</h3>
+            <div class="overview-careers-grid" id="overviewCareersGrid"></div>
+          </div>
+        </div>
+
+        <!-- HISTORY TAB -->
+        <div class="activity-panel" id="tab-history" hidden>
+          <div class="history-controls">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <label for="historySortSelect" style="font-weight:600;font-size:0.9rem">Sort:</label>
+              <select id="historySortSelect" style="padding:8px 12px;border:2px solid var(--border);border-radius:var(--radius-md);background:var(--bg);color:var(--text-primary);font-family:var(--font-body);cursor:pointer">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="type">By Personality Type</option>
+              </select>
+            </div>
+            <button class="btn btn-ghost btn-danger" id="clearHistoryBtn">🗑 Clear All History</button>
+          </div>
+          <div class="history-list" id="historyList"></div>
+          <div class="activity-empty" id="historyEmpty" style="display:none">
+            <div style="font-size:3rem;margin-bottom:16px">🔍</div>
+            <h3>No quiz history yet</h3>
+            <p>Take the assessment to see your results here.</p>
+            <button class="btn btn-primary" id="historyTakeQuizBtn" style="margin-top:20px">Take the Quiz →</button>
+          </div>
+        </div>
+
+        <!-- GOALS TAB -->
+        <div class="activity-panel" id="tab-goals" hidden>
+          <div style="margin-bottom:32px">
+            <h3 style="font-size:1.2rem;font-family:var(--font-display);margin-bottom:8px">Your Goals &amp; Roadmap</h3>
+            <p style="color:var(--text-secondary)">Each goal includes a step-by-step roadmap. Check off steps as you complete them.</p>
+          </div>
+          <div class="goals-active-list" id="goalsActiveList"></div>
+          <div class="activity-empty" id="goalsEmpty" style="display:none">
+            <div style="font-size:3rem;margin-bottom:16px">🎯</div>
+            <h3>No goals set yet</h3>
+            <p>Complete the quiz and choose goals to see your personalised roadmap here.</p>
+            <button class="btn btn-primary" id="goalsTakeQuizBtn" style="margin-top:20px">Take the Quiz →</button>
+          </div>
+        </div>
+
+        <!-- ACHIEVEMENTS TAB -->
+        <div class="activity-panel" id="tab-achievements" hidden>
+          <div class="achievements-grid" id="achievementsGrid"></div>
+        </div>
+
+      </div>
+    </main>
+  </div><!-- end #page-activity -->
 
   <script src="script.js"></script>
 </body>
