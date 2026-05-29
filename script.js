@@ -1,5 +1,5 @@
 /* ============================================================
-   CUREER — script.js  (Upgraded v2)
+   CUREER — script.js  (Fixed v2.1)
    24-question quiz · 20 careers · Goal tracking
    Activity page · Achievements · Dark/light mode
    ============================================================ */
@@ -607,8 +607,8 @@ const GOAL_OPTIONS = [
 let currentQuestion = 0;
 let answers = {};
 let quizStarted = false;
-let pendingResult = null;   // holds result data while user picks goals
-let selectedGoalIds = [];   // goal IDs selected on goal screen
+let pendingResult = null;
+let selectedGoalIds = [];
 
 // ─────────────────────────────────────────────
 // localStorage HELPERS
@@ -644,7 +644,7 @@ function saveGoalProgress(progress) {
 }
 
 // ─────────────────────────────────────────────
-// LOADER
+// LOADER  ← THE FIX: this now runs without errors
 // ─────────────────────────────────────────────
 
 window.addEventListener('load', () => {
@@ -782,7 +782,6 @@ const quizGoals    = document.getElementById('quizGoals');
 const nextBtn      = document.getElementById('nextBtn');
 const prevBtn      = document.getElementById('prevBtn');
 
-// Show resume button if saved progress exists
 if (localStorage.getItem('cureer-quiz-answers') && loadSavedBtn) {
   loadSavedBtn.style.display = 'inline-flex';
 }
@@ -818,7 +817,6 @@ function renderQuestion() {
   const total = QUIZ_QUESTIONS.length;
   const pct   = Math.round((currentQuestion / total) * 100);
 
-  // Progress bar
   const fill = document.getElementById('progressFill');
   if (fill) fill.style.width = pct + '%';
   const pText = document.getElementById('progressText');
@@ -826,17 +824,14 @@ function renderQuestion() {
   const pPct = document.getElementById('progressPct');
   if (pPct) pPct.textContent = pct + '%';
 
-  // Category badge
   const badge = document.getElementById('questionCategoryBadge');
   if (badge) badge.textContent = `${q.categoryEmoji} ${q.category}`;
 
-  // Question text
   const numEl = document.getElementById('questionNum');
   const textEl = document.getElementById('questionText');
   if (numEl) numEl.textContent = `Question ${currentQuestion + 1}`;
   if (textEl) textEl.textContent = q.text;
 
-  // Options
   const container = document.getElementById('questionOptions');
   container.innerHTML = '';
   const labels = ['A', 'B', 'C', 'D'];
@@ -849,11 +844,9 @@ function renderQuestion() {
     container.appendChild(btn);
   });
 
-  // Nav
   if (prevBtn) prevBtn.style.visibility = currentQuestion === 0 ? 'hidden' : 'visible';
   if (nextBtn) nextBtn.textContent = currentQuestion === total - 1 ? 'Continue →' : 'Next →';
 
-  // Animate card
   const card = document.getElementById('questionCard');
   if (card) { card.style.animation = 'none'; requestAnimationFrame(() => { card.style.animation = ''; }); }
 }
@@ -866,7 +859,6 @@ function selectOption(questionId, value, btn, container) {
   saveProgress();
 }
 
-// Add shake animation style
 const shakeStyle = document.createElement('style');
 shakeStyle.textContent = `@keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-8px)} 40%,80%{transform:translateX(8px)} }`;
 document.head.appendChild(shakeStyle);
@@ -952,7 +944,6 @@ document.getElementById('skipGoals')?.addEventListener('click', () => finaliseRe
 document.getElementById('confirmGoals')?.addEventListener('click', () => finaliseResults(selectedGoalIds));
 
 function finaliseResults(goalIds) {
-  // Save goals to localStorage
   const existing = getSavedGoals();
   const merged = [...existing];
   goalIds.forEach(id => {
@@ -962,7 +953,6 @@ function finaliseResults(goalIds) {
   });
   saveGoals(merged);
 
-  // Calculate results & save to activity
   const resultData = calculateResults();
   pendingResult = resultData;
 
@@ -980,40 +970,28 @@ function finaliseResults(goalIds) {
   };
   saveActivityResult(record);
 
-  // Clear quiz progress
   localStorage.removeItem('cureer-quiz-answers');
   localStorage.removeItem('cureer-quiz-question');
 
-  // Show results
   quizGoals.style.display = 'none';
   showResults(resultData);
 }
 
 // ─────────────────────────────────────────────
-// RESULTS CALCULATION
+// RESULTS CALCULATION  ← FIXED: single clean version
 // ─────────────────────────────────────────────
 
 function calculateResults() {
-
-  // ─────────────────────────────────────────────
-  // COUNT USER TRAITS
-  // ─────────────────────────────────────────────
-
+  // Count user trait scores from answers
   const scores = {};
-
   Object.values(answers).forEach(val => {
     scores[val] = (scores[val] || 0) + 1;
   });
 
-  // ─────────────────────────────────────────────
-  // DETERMINE DOMINANT PERSONALITY
-  // ─────────────────────────────────────────────
-
+  // Determine dominant personality type
   const personalityKeys = Object.keys(PERSONALITY_TYPES);
-
   let dominantType = 'creative';
   let maxScore = -1;
-
   personalityKeys.forEach(key => {
     if ((scores[key] || 0) > maxScore) {
       maxScore = scores[key] || 0;
@@ -1021,155 +999,54 @@ function calculateResults() {
     }
   });
 
-  // ─────────────────────────────────────────────
-  // IMPROVED CAREER MATCHING
-  // ─────────────────────────────────────────────
-
+  // Score each career
   const careerScores = CAREERS.map(career => {
-
     let totalDifference = 0;
     let totalTraits = 0;
 
-    // Compare user scores vs career ideal scores
     Object.entries(career.scores).forEach(([trait, careerWeight]) => {
-
       const userScore = scores[trait] || 0;
-
-      // Scale career weight to realistic trait expectations
       const idealScore = careerWeight * 2.5;
-
-      // Difference between user and ideal career profile
       const difference = Math.abs(userScore - idealScore);
-
       totalDifference += difference;
       totalTraits++;
     });
 
-    // Convert difference into match percentage
     let matchPct = 100 - ((totalDifference / (totalTraits * 10)) * 100);
 
-    // Add slight randomness for realism
+    // Small randomness for realism
     const randomBoost = Math.floor(Math.random() * 7) - 3;
     matchPct += randomBoost;
 
     // Bonus if dominant personality aligns with career category
     if (
-      (dominantType === 'creative' && career.category === 'creative') ||
-      (dominantType === 'tech' && career.category === 'tech') ||
-      (dominantType === 'social' && career.category === 'people') ||
-      (dominantType === 'leadership' && career.category === 'business') ||
-      (dominantType === 'analytical' && career.category === 'science')
+      (dominantType === 'creative'    && career.category === 'creative')  ||
+      (dominantType === 'tech'        && career.category === 'tech')      ||
+      (dominantType === 'social'      && career.category === 'people')    ||
+      (dominantType === 'leadership'  && career.category === 'business')  ||
+      (dominantType === 'analytical'  && career.category === 'science')
     ) {
       matchPct += 6;
     }
 
-    // Clamp realistic range
-    if (matchPct > 95) matchPct = 95;
-    if (matchPct < 42) matchPct = 42;
+    // Clamp to realistic range
+    matchPct = Math.max(42, Math.min(95, matchPct));
 
-    return {
-      ...career,
-      matchPct: Math.round(matchPct)
-    };
+    return { ...career, matchPct: Math.round(matchPct) };
   });
 
-  // Sort highest matches first
-  careerScores.sort((a, b) => b.matchPct - a.matchPct);
-
-  // ─────────────────────────────────────────────
-  // STRENGTH PROFILE
-  // ─────────────────────────────────────────────
-
-  const strengthProfile = [
-    {
-      label: "Creativity",
-      value: Math.min(100, ((scores.creative || 0) / 6) * 100),
-      color: "linear-gradient(90deg,#fbcfe8,#f9a8d4)"
-    },
-
-    {
-      label: "Analytical",
-      value: Math.min(100, ((scores.analytical || 0) / 6) * 100),
-      color: "linear-gradient(90deg,#bfdbfe,#93c5fd)"
-    },
-
-    {
-      label: "Leadership",
-      value: Math.min(100, ((scores.leadership || 0) / 6) * 100),
-      color: "linear-gradient(90deg,#fed7aa,#fbbf24)"
-    },
-
-    {
-      label: "Social",
-      value: Math.min(100, ((scores.social || 0) / 6) * 100),
-      color: "linear-gradient(90deg,#a7f3d0,#34d399)"
-    },
-
-    {
-      label: "Tech",
-      value: Math.min(100, ((scores.tech || 0) / 6) * 100),
-      color: "linear-gradient(90deg,#c4b5fd,#818cf8)"
-    },
-
-    {
-      label: "Business",
-      value: Math.min(100, ((scores.business || 0) / 6) * 100),
-      color: "linear-gradient(90deg,#fde68a,#f59e0b)"
-    },
-
-    {
-      label: "Science",
-      value: Math.min(100, ((scores.science || 0) / 6) * 100),
-      color: "linear-gradient(90deg,#86efac,#22c55e)"
-    },
-
-    {
-      label: "STEM",
-      value: Math.min(100, ((scores.stem || 0) / 4) * 100),
-      color: "linear-gradient(90deg,#bfdbfe,#c4b5fd)"
-    }
-  ];
-
-  // ─────────────────────────────────────────────
-  // RETURN RESULTS
-  // ─────────────────────────────────────────────
-
-  return {
-    dominantType,
-    careerScores,
-    strengthProfile
-  };
-}
-
-  // Dominant personality type
-  const personalityKeys = Object.keys(PERSONALITY_TYPES);
-  let dominantType = 'creative', maxScore = -1;
-  personalityKeys.forEach(key => {
-    if ((scores[key] || 0) > maxScore) { maxScore = scores[key] || 0; dominantType = key; }
-  });
-
-  // Score each career
-  const careerScores = CAREERS.map(career => {
-    let total = 0, max = 0;
-    Object.entries(career.scores).forEach(([trait, weight]) => {
-      total += (scores[trait] || 0) * weight;
-      max   += 3 * weight; // assume max 3 questions per trait
-    });
-    const pct = Math.min(99, Math.round(40 + (total / Math.max(max, 1)) * 59));
-    return { ...career, matchPct: pct };
-  });
   careerScores.sort((a, b) => b.matchPct - a.matchPct);
 
   // Strength profile (8 bars)
   const strengthProfile = [
-    { label: "Creativity",    value: Math.min(100, ((scores.creative   || 0) / 6)  * 100), color: "linear-gradient(90deg,#fbcfe8,#f9a8d4)" },
-    { label: "Analytical",    value: Math.min(100, ((scores.analytical || 0) / 6)  * 100), color: "linear-gradient(90deg,#bfdbfe,#93c5fd)" },
-    { label: "Leadership",    value: Math.min(100, ((scores.leadership || 0) / 6)  * 100), color: "linear-gradient(90deg,#fed7aa,#fbbf24)" },
-    { label: "Social",        value: Math.min(100, ((scores.social     || 0) / 6)  * 100), color: "linear-gradient(90deg,#a7f3d0,#34d399)" },
-    { label: "Tech",          value: Math.min(100, ((scores.tech       || 0) / 6)  * 100), color: "linear-gradient(90deg,#c4b5fd,#a78bfa)" },
-    { label: "Business",      value: Math.min(100, ((scores.business   || 0) / 6)  * 100), color: "linear-gradient(90deg,#fde68a,#fbbf24)" },
-    { label: "Independent",   value: Math.min(100, ((scores.independent|| 0) / 4)  * 100), color: "linear-gradient(90deg,#bbf7d0,#6ee7b7)" },
-    { label: "STEM",          value: Math.min(100, ((scores.stem       || 0) / 4)  * 100), color: "linear-gradient(90deg,#bfdbfe,#c4b5fd)" },
+    { label: "Creativity",  value: Math.min(100, ((scores.creative    || 0) / 6) * 100), color: "linear-gradient(90deg,#fbcfe8,#f9a8d4)" },
+    { label: "Analytical",  value: Math.min(100, ((scores.analytical  || 0) / 6) * 100), color: "linear-gradient(90deg,#bfdbfe,#93c5fd)" },
+    { label: "Leadership",  value: Math.min(100, ((scores.leadership  || 0) / 6) * 100), color: "linear-gradient(90deg,#fed7aa,#fbbf24)" },
+    { label: "Social",      value: Math.min(100, ((scores.social      || 0) / 6) * 100), color: "linear-gradient(90deg,#a7f3d0,#34d399)" },
+    { label: "Tech",        value: Math.min(100, ((scores.tech        || 0) / 6) * 100), color: "linear-gradient(90deg,#c4b5fd,#818cf8)" },
+    { label: "Business",    value: Math.min(100, ((scores.business    || 0) / 6) * 100), color: "linear-gradient(90deg,#fde68a,#f59e0b)" },
+    { label: "Science",     value: Math.min(100, ((scores.science     || 0) / 6) * 100), color: "linear-gradient(90deg,#86efac,#22c55e)" },
+    { label: "STEM",        value: Math.min(100, ((scores.stem        || 0) / 4) * 100), color: "linear-gradient(90deg,#bfdbfe,#c4b5fd)" },
   ];
 
   return { dominantType, careerScores, strengthProfile };
@@ -1490,7 +1367,6 @@ document.getElementById('mobileActivityBtn')?.addEventListener('click', () => {
 });
 document.getElementById('backToMain')?.addEventListener('click', () => navigateTo('main'));
 
-// "Take quiz" buttons from activity page
 ['historyTakeQuizBtn', 'goalsTakeQuizBtn'].forEach(id => {
   document.getElementById(id)?.addEventListener('click', () => {
     navigateTo('main');
@@ -1528,7 +1404,6 @@ function renderActivityPage() {
   renderAchievementsTab(history, goals);
 }
 
-/* ── Stats row ── */
 function renderActivityStats(history, goals) {
   const el = document.getElementById('activityHeroStats');
   if (!el) return;
@@ -1548,7 +1423,6 @@ function renderActivityStats(history, goals) {
   `;
 }
 
-/* ── Overview tab ── */
 function renderOverviewTab(latest) {
   const grid = document.getElementById('overviewGrid');
   if (!grid) return;
@@ -1607,7 +1481,6 @@ function renderOverviewTab(latest) {
     </div>
   `;
 
-  // Career recommendations
   const section = document.getElementById('overviewCareersSection');
   const careersGrid = document.getElementById('overviewCareersGrid');
   section.style.display = 'block';
@@ -1627,7 +1500,6 @@ function renderOverviewTab(latest) {
   });
 }
 
-/* ── History tab ── */
 function renderHistoryTab(historyRaw) {
   const sortSelect = document.getElementById('historySortSelect');
   if (!sortSelect) return;
@@ -1671,7 +1543,6 @@ function renderHistoryTab(historyRaw) {
   sortSelect.addEventListener('change', doRender);
 }
 
-/* ── Goals tab ── */
 function renderGoalsTab(goals) {
   const listEl  = document.getElementById('goalsActiveList');
   const emptyEl = document.getElementById('goalsEmpty');
@@ -1715,7 +1586,6 @@ function renderGoalsTab(goals) {
       </div>
     `;
 
-    // Step toggle
     card.querySelectorAll('.goal-step').forEach(stepEl => {
       const toggle = () => {
         const goalId  = stepEl.dataset.goal;
@@ -1726,7 +1596,7 @@ function renderGoalsTab(goals) {
         if (idx === -1) prog[goalId].push(stepIdx);
         else prog[goalId].splice(idx, 1);
         saveGoalProgress(prog);
-        renderGoalsTab(getSavedGoals()); // re-render
+        renderGoalsTab(getSavedGoals());
       };
       const check = stepEl.querySelector('.goal-step-check');
       check.addEventListener('click', toggle);
@@ -1737,7 +1607,6 @@ function renderGoalsTab(goals) {
   });
 }
 
-/* ── Achievements tab ── */
 function renderAchievementsTab(history, goals) {
   const grid = document.getElementById('achievementsGrid');
   if (!grid) return;
@@ -1747,14 +1616,14 @@ function renderAchievementsTab(history, goals) {
   const stepsDoneCount = Object.values(progress).reduce((sum, arr) => sum + arr.length, 0);
 
   const BADGES = [
-    { icon: '🎉', label: 'First Steps',      desc: 'Completed your first quiz',      earned: history.length >= 1  },
-    { icon: '🔁', label: 'Triple Thinker',   desc: 'Completed 3 quizzes',            earned: history.length >= 3  },
-    { icon: '⭐', label: 'Career Explorer',  desc: 'Completed 5 quizzes',            earned: history.length >= 5  },
-    { icon: '🎯', label: 'Goal Setter',      desc: 'Set your first career goal',     earned: goals.length >= 1    },
-    { icon: '💪', label: 'Determined',       desc: 'Set 3 different goals',          earned: goals.length >= 3    },
-    { icon: '🏆', label: 'Overachiever',     desc: 'Set all 8 available goals',      earned: goals.length >= 8    },
-    { icon: '✅', label: 'First Step Taken', desc: 'Completed your first goal step', earned: stepsDoneCount >= 1  },
-    { icon: '🔥', label: 'On a Roll',        desc: 'Took quizzes on 3+ different days', earned: uniqueDays >= 3   },
+    { icon: '🎉', label: 'First Steps',      desc: 'Completed your first quiz',         earned: history.length >= 1 },
+    { icon: '🔁', label: 'Triple Thinker',   desc: 'Completed 3 quizzes',               earned: history.length >= 3 },
+    { icon: '⭐', label: 'Career Explorer',  desc: 'Completed 5 quizzes',               earned: history.length >= 5 },
+    { icon: '🎯', label: 'Goal Setter',      desc: 'Set your first career goal',        earned: goals.length >= 1   },
+    { icon: '💪', label: 'Determined',       desc: 'Set 3 different goals',             earned: goals.length >= 3   },
+    { icon: '🏆', label: 'Overachiever',     desc: 'Set all 8 available goals',         earned: goals.length >= 8   },
+    { icon: '✅', label: 'First Step Taken', desc: 'Completed your first goal step',    earned: stepsDoneCount >= 1 },
+    { icon: '🔥', label: 'On a Roll',        desc: 'Took quizzes on 3+ different days', earned: uniqueDays >= 3     },
   ];
 
   grid.innerHTML = BADGES.map(b => `
@@ -1769,7 +1638,6 @@ function renderAchievementsTab(history, goals) {
   `).join('');
 }
 
-// Clear history button
 document.getElementById('clearHistoryBtn')?.addEventListener('click', () => {
   if (confirm('Are you sure you want to clear all quiz history? This cannot be undone.')) {
     localStorage.removeItem('cureer-activity');
@@ -1787,6 +1655,5 @@ function formatDate(iso) {
     + ' at ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 }
 
-// Console branding
 console.log('%c✦ Cureer', 'font-family:sans-serif;font-size:20px;font-weight:bold;background:linear-gradient(135deg,#a78bfa,#f9a8d4);-webkit-background-clip:text;color:transparent;');
-console.log('%cHelping young people find their path 💛 — v2.0 upgraded', 'font-family:sans-serif;color:#7c6fcd;');
+console.log('%cHelping young people find their path 💛 — v2.1 fixed', 'font-family:sans-serif;color:#7c6fcd;');
